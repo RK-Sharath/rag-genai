@@ -28,7 +28,7 @@ def upload_data(pdf):
            if uploaded_file is not None:
                        bytes_data = uploaded_file.getvalue()
                        st.write(bytes_data)
-            return None
+           return None
 
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
