@@ -23,14 +23,16 @@ chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 
-uploaded_file = st.file_uploader('Upload your file', type=['pdf'])
-if uploaded_file is not None:
-            bytes_data = uploaded_file.getvalue()
-            st.write(bytes_data)
+def upload_data(pdf):
+            uploaded_file = st.file_uploader('Upload your file', type=['pdf'])
+            if uploaded_file is not None:
+                        bytes_data = uploaded_file.getvalue()
+                        st.write(bytes_data)
+            return None
 
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-loader = UnstructuredPDFLoader(bytes_data)
+loader = UnstructuredPDFLoader(upload_data)
 loaded_docs = loader.load()
 chunked_docs = splitter.split_documents(loaded_docs)
 
