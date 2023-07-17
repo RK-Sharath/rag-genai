@@ -5,3 +5,4 @@ ibm-generative-ai
 InstructorEmbedding
 chromadb
 unstructured
+pdfminer
