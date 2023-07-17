@@ -22,12 +22,12 @@ genai_api_url = st.sidebar.text_input("GenAI API URL", type="default")
 chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
+uploaded_file = st.file_uploader('Upload your file', type=['pdf'])
 
 def upload_data(pdf):
-            uploaded_file = st.file_uploader('Upload your file', type=['pdf'])
-            if uploaded_file is not None:
-                        bytes_data = uploaded_file.getvalue()
-                        st.write(bytes_data)
+           if uploaded_file is not None:
+                       bytes_data = uploaded_file.getvalue()
+                       st.write(bytes_data)
             return None
 
 
