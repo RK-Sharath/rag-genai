@@ -24,9 +24,10 @@ chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 
 uploaded_file = st.file_uploader('Upload your file', type=['pdf'])
-string_data = StringIO.read(uploaded_file)
-st.write(string_data)
-loader = UnstructuredPDFLoader(stringio)
+if uploaded_file is not None:
+            bytes_data = uploaded_file.getvalue()
+            st.write(bytes_data)
+loader = UnstructuredPDFLoader(bytes_data)
 loaded_docs = loader.load()
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
