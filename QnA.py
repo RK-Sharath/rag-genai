@@ -31,7 +31,7 @@ base64_pdf = base64.b64encode(uploaded.read()).decode("utf-8")
 
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-loader = UnstructuredPDFLoader()
+loader = UnstructuredPDFLoader(base64_pdf)
 loaded_docs = loader.load()
 chunked_docs = splitter.split_documents(loaded_docs)
 
