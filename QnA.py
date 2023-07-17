@@ -12,7 +12,8 @@ from langchain.chains.summarize import load_summarize_chain
 from langchain import OpenAI, PromptTemplate, LLMChain
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Chroma
-from io import StringIO
+import pdfminer
+from pdfminer.high_level import extract_pages
 
 st.title("Retrieval Augmented Generation App")
 st.header("This app was developed by Sharath Kumar RK, Ecosystem Engineering Watsonx team")
@@ -23,17 +24,13 @@ chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 
-uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
-if uploaded_file is not None:
-    df = extract_data(uploaded_file)
+st.write(pdfminer.__version__)  
 
-def extract_data(feed):
-    data = []
-    with pdfplumber.load(feed) as pdf:
-        pages = pdf.pages
-        for p in pages:
-            data.append(p.extract_tables())
-    return None 
+uploaded_file = st.file_uploader("Choose a file", "pdf")
+if uploaded_file is not None:
+    for page_layout in extract_pages(uploaded_file):
+        for element in page_layout:
+            st.write(element)
 
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
