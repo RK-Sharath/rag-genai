@@ -27,11 +27,13 @@ uploaded_file = st.file_uploader('Upload your file', type=['pdf'])
 if uploaded_file is not None:
             bytes_data = uploaded_file.getvalue()
             st.write(bytes_data)
-loader = UnstructuredPDFLoader(bytes_data)
-loaded_docs = loader.load()
+
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
 chunked_docs = splitter.split_documents(loaded_docs)
+
+loader = UnstructuredPDFLoader(bytes_data)
+loaded_docs = loader.load()
 
 embeddings = HuggingFaceInstructEmbeddings(
             model_name="hkunlp/instructor-large",
