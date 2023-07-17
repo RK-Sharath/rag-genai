@@ -12,6 +12,7 @@ from langchain.chains.summarize import load_summarize_chain
 from langchain import OpenAI, PromptTemplate, LLMChain
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Chroma
+from io import StringIO
 
 st.title("Retrieval Augmented Generation App")
 st.header("This app was developed by Sharath Kumar RK, Ecosystem Engineering Watsonx team")
@@ -23,7 +24,9 @@ chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 
 uploaded_file = st.file_uploader('Upload your file', type=['pdf'])
-loader = UnstructuredPDFLoader(uploaded_file)
+stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+st.write(stringio)
+loader = UnstructuredPDFLoader(stringio)
 loaded_docs = loader.load()
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
