@@ -24,7 +24,7 @@ chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 
 uploaded_file = st.file_uploader('Upload your file', type=['pdf'])
-string_data = stringio.read(uploaded_file)
+string_data = StringIO.read(uploaded_file)
 st.write(string_data)
 loader = UnstructuredPDFLoader(stringio)
 loaded_docs = loader.load()
