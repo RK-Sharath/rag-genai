@@ -12,8 +12,7 @@ from langchain.chains.summarize import load_summarize_chain
 from langchain import OpenAI, PromptTemplate, LLMChain
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Chroma
-import pdfminer
-from pdfminer.high_level import extract_pages
+import base64
 
 st.title("Retrieval Augmented Generation App")
 st.header("This app was developed by Sharath Kumar RK, Ecosystem Engineering Watsonx team")
@@ -24,13 +23,11 @@ chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 
-st.write(pdfminer.__version__)  
+uploaded = st.file_uploader(label="Please browse for a pdf file", type="pdf")
+if uploaded is None:
+    st.stop()
 
-uploaded_file = st.file_uploader("Choose a file", "pdf")
-if uploaded_file is not None:
-    for page_layout in extract_pages(uploaded_file):
-        for element in page_layout:
-            st.write(element)
+base64_pdf = base64.b64encode(uploaded.read()).decode("utf-8")
 
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
