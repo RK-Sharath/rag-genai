@@ -30,10 +30,12 @@ if uploaded_file is not None:
 
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-chunked_docs = splitter.split_documents(loaded_docs)
-
 loader = UnstructuredPDFLoader(bytes_data)
 loaded_docs = loader.load()
+chunked_docs = splitter.split_documents(loaded_docs)
+
+
+
 
 embeddings = HuggingFaceInstructEmbeddings(
             model_name="hkunlp/instructor-large",
