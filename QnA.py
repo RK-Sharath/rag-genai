@@ -22,17 +22,22 @@ genai_api_url = st.sidebar.text_input("GenAI API URL", type="default")
 chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
-uploaded_file = st.file_uploader('Upload your file', type=['pdf'])
 
-def upload_data(pdf):
-           if uploaded_file is not None:
-                       bytes_data = uploaded_file.getvalue()
-                       st.write(bytes_data)
-           return None
+uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
+if uploaded_file is not None:
+    df = extract_data(uploaded_file)
+
+def extract_data(feed):
+    data = []
+    with pdfplumber.load(feed) as pdf:
+        pages = pdf.pages
+        for p in pages:
+            data.append(p.extract_tables())
+    return None 
 
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-loader = UnstructuredPDFLoader(upload_data)
+loader = UnstructuredPDFLoader(extract_data)
 loaded_docs = loader.load()
 chunked_docs = splitter.split_documents(loaded_docs)
 
