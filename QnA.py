@@ -34,7 +34,7 @@ if uploaded_file is not None:
 
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-loader = UnstructuredPDFLoader(uploaded_file)
+loader = UnstructuredPDFLoader(element)
 loaded_docs = loader.load()
 chunked_docs = splitter.split_documents(loaded_docs)
 
