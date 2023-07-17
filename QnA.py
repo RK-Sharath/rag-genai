@@ -21,6 +21,7 @@ genai_api_key = st.sidebar.text_input("GenAI API Key", type="password")
 genai_api_url = st.sidebar.text_input("GenAI API URL", type="default")
 chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
+path = st.sidebar.text_input("Select the path", type="default")
 
 
 uploaded = st.file_uploader(label="Please browse for a pdf file", type="pdf")
@@ -31,10 +32,12 @@ base64_pdf = base64.b64encode(uploaded.read()).decode("utf-8")
 
 
 splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-#loader = UnstructuredPDFLoader(base64_pdf)
-#loaded_docs = loader.load()
-#chunked_docs = splitter.split_documents(loaded_docs)
-chunked_docs = splitter.split_documents(base64_pdf)
+
+pdf_file_path=(path)
+loader = UnstructuredPDFLoader(pdf_file_path)
+loaded_docs = loader.load()
+chunked_docs = splitter.split_documents(loaded_docs)
+
 
 
 
