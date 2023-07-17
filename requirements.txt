@@ -4,3 +4,4 @@ ibm-generative-ai[langchain]
 ibm-generative-ai
 InstructorEmbedding
 chromadb
+unstructured
