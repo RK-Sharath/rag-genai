@@ -41,6 +41,7 @@ if uploaded_files:
     def gen_content(question):
         texts = text_splitter.createDocuments(raw_text)
         embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
+        embeddings=embeddings
         docsearch = Chroma.from_documents(texts, embeddings)
         creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
         params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
