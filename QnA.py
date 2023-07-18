@@ -36,16 +36,9 @@ def chunk_data(self):
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap
         )
-        self._texts = text_splitter.split_documents(self._data)
-        if self._texts is None or len(self._texts) == 0:
-            raise Exception("The document does not contain any text.")
-
-
-
-pdf_file_path=(path)
-loader = UnstructuredPDFLoader(pdf_file_path)
-loaded_docs = loader.load()
-chunked_docs = splitter.split_documents(loaded_docs)
+    self._texts = text_splitter.split_documents(self._data)
+    if self._texts is None or len(self._texts) == 0:
+        raise Exception("The document does not contain any text.")
 
 
 
