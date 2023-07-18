@@ -69,7 +69,7 @@ def creds():
 
 def rag(question):
     # Run LLM model
-    response = qa.run(question)
+    response = qa.run{question}
     # Print results
     return st.info(response)
 
