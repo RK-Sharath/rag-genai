@@ -71,7 +71,7 @@ def rag():
     # Run LLM model
     response = qa.run(question)
     # Print results
-    return response
+    return st.info(response)
 
 
 with st.form("myform"):
