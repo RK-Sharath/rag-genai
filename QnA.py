@@ -38,16 +38,22 @@ if uploaded_files:
                     length_function=len,
                 )
                 
-    texts = text_splitter.split_documents(raw_text)
-    embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
-    embeddings = embeddings
-    docsearch = Chroma.from_documents(texts, embeddings)
-    creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
-    params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
-    llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
-    qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
+    def gen_content(txt):
+        texts = text_splitter.split_documents(raw_text)
+        embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
+        docsearch = Chroma.from_documents(texts, embeddings)
+        creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
+        params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
+        llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
+        qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
+        return qa
                 
-query = st.text_input("Ask a question or give an instruction")
-submitted = st.form_submit_button("Submit")
-answer = qa.run(query)
-st.write(answer)
+with st.form("myform"):
+    question = st.text_input("Ask a question:", "")
+    submitted = st.form_submit_button("Submit")
+    if submitted and genai_api_key.startswith('pak-'):
+        with st.spinner('Working on it...'):
+            if not genai_api_key:
+                st.info("Please add your GenAI API KEY & GenAI API URL to continue.")
+            elif submitted:
+                gen_content(question)
