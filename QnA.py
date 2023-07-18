@@ -25,14 +25,14 @@ uploaded_files = st.file_uploader("Choose PDF files", type="pdf", accept_multipl
 pdf_reader = PdfReader(uploaded_file)
 for i, page in enumerate(pdf_reader.pages):
     text = page.extract_text()
-        if text:
-            raw_text += text
-            text_splitter = CharacterTextSplitter(
-                separator="\n", # line break
-                chunk_size = chunk_size,
-                chunk_overlap = chunk_overlap,  
-                length_function=len,
-            )
+    if text:
+        raw_text += text
+        text_splitter = CharacterTextSplitter(
+            separator="\n", # line break
+            chunk_size = chunk_size,
+            chunk_overlap = chunk_overlap,  
+            length_function=len,
+        )
 
 texts = text_splitter.split_text(raw_text)
 embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
