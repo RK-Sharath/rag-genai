@@ -70,7 +70,7 @@ def llm(self):
     llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
     return llm
     
-def qa(question):
+def qna():
     query=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
     return st.info(query)
 
@@ -78,4 +78,4 @@ def qa(question):
 with st.form("myform"):
     question = st.text_input("Type your question:", value="", placeholder="")
     submitted = st.form_submit_button("Submit")
-    qa(question)
+    qna(question)
