@@ -67,9 +67,9 @@ def creds():
     creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
     return creds
 
-def rag(question):
+def rag():
     # Run LLM model
-    response = qa.run{question}
+    response = qa.run(question)
     # Print results
     return st.info(response)
 
