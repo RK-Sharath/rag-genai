@@ -90,5 +90,5 @@ with st.form("myform"):
             if not genai_api_key:
                 st.info("Please add your GenAI API key & GenAI API URL to continue.")
             elif submitted:
-                answer = qa.run()
+                answer = qa.run(question)
                 return answer
