@@ -38,7 +38,7 @@ if uploaded_files:
                     length_function=len,
                 )
                 
-                texts = text_splitter.split_text(raw_text)
+                texts = text_splitter.split_documents(raw_text)
                 embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
                 embeddings = embeddings
                 docsearch = Chroma.from_documents(texts, embeddings)
