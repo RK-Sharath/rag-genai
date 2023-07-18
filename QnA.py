@@ -67,14 +67,14 @@ def qa(self):
     qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
     return qa
 
-def rag():
+def rag(question):
     response = qa.run()
     # Print results
     return st.info(response)
 
 
 with st.form("myform"):
-    question = st.text_input("Type your question:", "")
+    question = st.text_input("Type your question:", value="", placeholder="")
     submitted = st.form_submit_button("Submit")
     if not genai_api_key:
         st.info("Please add your GenAI API key & GenAI API URL to continue.")
