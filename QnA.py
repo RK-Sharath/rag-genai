@@ -29,7 +29,7 @@ if uploaded is None:
 
 base64_pdf = base64.b64encode(uploaded.read()).decode("utf-8")
     
-text_splitter=CharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
+splitter=CharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
 chunked_docs=splitter.split_documents(base64_pdf)
 
 
