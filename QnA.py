@@ -79,7 +79,8 @@ def llm(self):
 
 def qa(self):
     qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
-    return qa
+    answer = qa.run(question)
+    return st.info(answer)
 
 
 with st.form("myform"):
@@ -87,8 +88,7 @@ with st.form("myform"):
     submitted = st.form_submit_button("Submit")
     if submitted and genai_api_key.startswith('pak-'):
         with st.spinner('Working on it...'):
-            answer = qa.run(question)
             if not genai_api_key:
                 st.info("Please add your GenAI API key & GenAI API URL to continue.")
             elif submitted:      
-return answer
+                qa(question)
