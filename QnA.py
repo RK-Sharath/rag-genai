@@ -22,27 +22,17 @@ chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 uploaded_files = st.file_uploader("Choose PDF files", type="pdf", accept_multiple_files=True)
-if uploaded_files:
-    raw_text = ''
-    # Loop through each uploaded file
-    for uploaded_file in uploaded_files:
-        # Read the PDF
-        pdf_reader = PdfReader(uploaded_file)
-                # Loop through each page in the PDF
-        for i, page in enumerate(pdf_reader.pages):
-    
-            # Extract the text from the page
-            text = page.extract_text()
-        
-            # If there is text, add it to the raw text
-            if text:
-              raw_text += text
-                text_splitter = CharacterTextSplitter(
-                    separator="\n", # line break
-                    chunk_size = 1000,
-                    chunk_overlap = 200,  
-                    length_function=len,
-                )
+pdf_reader = PdfReader(uploaded_file)
+for i, page in enumerate(pdf_reader.pages):
+    text = page.extract_text()
+        if text:
+            raw_text += text
+            text_splitter = CharacterTextSplitter(
+                separator="\n", # line break
+                chunk_size = chunk_size,
+                chunk_overlap = chunk_overlap,  
+                length_function=len,
+            )
                 
 embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
 embeddings = embeddings
