@@ -6,4 +6,3 @@ InstructorEmbedding
 chromadb
 unstructured
 PyPDF2
-dotenv
