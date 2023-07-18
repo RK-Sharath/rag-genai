@@ -46,7 +46,7 @@ if uploaded_files:
         params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
         llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
         qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
-        return qa
+        return st.info(qa)
                 
 with st.form("myform"):
     question = st.text_input("Ask a question:", "")
