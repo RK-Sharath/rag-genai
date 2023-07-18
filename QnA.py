@@ -23,7 +23,13 @@ chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 file = st.file_uploader("Upload a PDF file from your computer", type="pdf")
-loader = UnstructuredPDFLoader(file)
+question = st.text_input(
+    "Ask something about the article",
+    placeholder="Can you give me a short summary?",
+    disabled=not file,
+)
+article = file.read().decode()
+loader = UnstructuredPDFLoader(article)
 data = loader.load()
 text_splitter=CharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
 chunked_docs=splitter.split_documents(data)
