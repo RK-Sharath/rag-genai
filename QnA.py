@@ -36,8 +36,13 @@ st.markdown(pdf_display, unsafe_allow_html=True)
     
 splitter=CharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
 chunked_docs=splitter.split_documents(base64_pdf)
-
-
+embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
+embeddings = embeddings
+docsearch = Chroma.from_documents(chunked_docs, embeddings)
+creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
+params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
+llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
+qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
 
 with st.form("myform"):
     question = st.text_input("Type your question:", value="", placeholder="")
