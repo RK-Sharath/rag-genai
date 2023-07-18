@@ -41,13 +41,12 @@ def chunk_data(self):
         raise Exception("The document does not contain any text.")
 
 
-
-
-
-embeddings = HuggingFaceInstructEmbeddings(
+def embeddings(self):
+    embeddings = HuggingFaceInstructEmbeddings(
             model_name="hkunlp/instructor-large",
             model_kwargs={"device": "cpu"}
         )
+    return embeddings
 
 docsearch = Chroma.from_documents(chunked_docs, embeddings)
 
