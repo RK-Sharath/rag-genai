@@ -47,29 +47,28 @@ def embeddings(self):
         )
     return embeddings
 
-def docsearch(self):
-    docsearch = Chroma.from_documents(chunked_docs, embeddings)
-    return docsearch
-
-def llm(self):
-    llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
-    return llm
+def creds():
+    creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
+    return creds
 
 def params(self):   
     params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
     return params
 
+def llm(self):
+    llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
+    return llm
+
+def docsearch(self):
+    docsearch = Chroma.from_documents(chunked_docs, embeddings)
+    return docsearch
+
 def qa(self):
     qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
     return qa
 
-def creds():
-    creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
-    return creds
-
 def rag():
-    # Run LLM model
-    response = qa.run(question)
+    response = qa.run()
     # Print results
     return st.info(response)
 
@@ -79,5 +78,5 @@ with st.form("myform"):
     submitted = st.form_submit_button("Submit")
     if not genai_api_key:
         st.info("Please add your GenAI API key & GenAI API URL to continue.")
-   # elif submitted:
-      #  rag(question)
+    elif submitted:
+        rag(question)
