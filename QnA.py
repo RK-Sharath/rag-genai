@@ -36,7 +36,9 @@ def save_file(self, file):
 def load_data(self):
     loader = UnstructuredPDFLoader(self._filename)
     self._data = loader.load()
-        
+    
+st.info(load_data)     
+
 def chunked_docs(self):
     text_splitter = CharacterTextSplitter(
         chunk_size=chunk_size,
