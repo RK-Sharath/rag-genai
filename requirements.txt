@@ -6,3 +6,4 @@ InstructorEmbedding
 chromadb
 unstructured
 PyPDF2
+sentence_transformers
