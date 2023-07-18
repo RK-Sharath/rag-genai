@@ -71,9 +71,8 @@ def llm(self):
     return llm
     
 def qa(question):
-    qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
-    answer = qa.run(question)
-    return st.info(answer)
+    query=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
+    return st.info(query)
 
 
 with st.form("myform"):
