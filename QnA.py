@@ -6,7 +6,6 @@ from langchain.chains.question_answering import load_qa_chain
 from genai.extensions.langchain import LangChainInterface
 from genai.schemas import ModelType, GenerateParams
 from genai.model import Credentials
-import time
 from langchain.chains.mapreduce import MapReduceChain
 from langchain.chains.summarize import load_summarize_chain
 from langchain import OpenAI, PromptTemplate, LLMChain
@@ -23,13 +22,7 @@ chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 file = st.file_uploader("Upload a PDF file from your computer", type="pdf")
-question = st.text_input(
-    "Ask something about the article",
-    placeholder="Can you give me a short summary?",
-    disabled=not file,
-)
-article = file.read().decode()
-loader = UnstructuredPDFLoader(article)
+loader = UnstructuredPDFLoader('/Users/sharath/Desktop/Snowflake/sec-guide-to-savings-and-investing.pdf')
 data = loader.load()
 text_splitter=CharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
 chunked_docs=splitter.split_documents(data)
