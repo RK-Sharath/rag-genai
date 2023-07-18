@@ -28,11 +28,6 @@ if uploaded is None:
     st.stop()
 
 base64_pdf = base64.b64encode(uploaded.read()).decode("utf-8")
-pdf_display = (
-    f'<embed src="data:application/pdf;base64,{base64_pdf}" '
-    'width="800" height="1000" type="application/pdf"></embed>'
-)
-st.markdown(pdf_display, unsafe_allow_html=True)
     
 splitter=CharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
 chunked_docs=splitter.split_documents(base64_pdf)
