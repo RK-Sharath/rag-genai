@@ -71,7 +71,7 @@ def llm(self):
     return llm
     
 
-def qa(self):
+def qa(question):
     qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
     answer = qa.run(question)
     return st.info(answer)
