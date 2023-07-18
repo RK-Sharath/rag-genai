@@ -21,22 +21,9 @@ genai_api_url = st.sidebar.text_input("GenAI API URL", type="default")
 chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
-uploaded_files = st.file_uploader("Choose PDF files", type="pdf", accept_multiple_files=True)
-if uploaded_files:
-    raw_text = ''
-    # Loop through each uploaded file
-    for uploaded_file in uploaded_files:
-        pdf_reader = PdfReader(uploaded_file)
-        for i, page in enumerate(pdf_reader.pages):
-            text = page.extract_text()
-            if text:
-                raw_text += text
-                text_splitter = CharacterTextSplitter(
-                    separator="\n", # line break
-                    chunk_size = chunk_size,
-                    chunk_overlap = chunk_overlap,  
-                    length_function=len,
-                )
+uploaded_file = st.file_uploader("Choose PDF file", type="pdf", accept_multiple_files=False)
+with open(uploaded_file, 'wb') as f: 
+    f.write(filebytes)
                 
     def gen_content(question):
         texts = text_splitter.createDocuments(raw_text)
