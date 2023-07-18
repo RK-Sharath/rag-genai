@@ -5,3 +5,4 @@ InstructorEmbedding
 chromadb
 unstructured
 PyPDF2
+transformers
