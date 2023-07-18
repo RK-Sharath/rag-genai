@@ -87,8 +87,8 @@ with st.form("myform"):
     submitted = st.form_submit_button("Submit")
     if submitted and genai_api_key.startswith('pak-'):
         with st.spinner('Working on it...'):
-            answer = qa.run()
             if not genai_api_key:
                 st.info("Please add your GenAI API key & GenAI API URL to continue.")
             elif submitted:
-        return answer
+                answer = qa.run()
+                return answer
