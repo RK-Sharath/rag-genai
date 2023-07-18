@@ -22,14 +22,22 @@ chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 uploaded_file = st.file_uploader("Choose PDF file", type="pdf", accept_multiple_files=False)
-with open(uploaded_file, 'wb') as f: 
-    f.write(filebytes)
+if uploaded_files:
+    raw_text = ''
+    pdf_reader = PdfReader(uploaded_file)
+    for i, page in enumerate(pdf_reader.pages):
+        text = page.extract_text()
+        if text:
+            raw_text += text
+            
                 
     def gen_content(question):
-        texts = text_splitter.createDocuments(filebytes)
+        text_splitter = CharacterTextSplitter()
+        texts = text_splitter.split_text(raw_text)
+        docs = [Document(page_content=t) for t in texts]
         embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
         embeddings=embeddings
-        docsearch = Chroma.from_documents(texts, embeddings)
+        docsearch = Chroma.from_documents(docs, embeddings)
         creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
         params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
         llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
