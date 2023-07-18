@@ -70,7 +70,7 @@ def llm(self):
     llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
     return llm
     
-def qna():
+def qna(question):
     query=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
     response=query.run()
     return st.info(response)
