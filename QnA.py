@@ -12,6 +12,7 @@ from langchain import OpenAI, PromptTemplate, LLMChain
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Chroma
 import base64
+import fitz
 
 st.title("Retrieval Augmented Generation App")
 st.header("This app was developed by Sharath Kumar RK, Ecosystem Engineering Watsonx team")
@@ -21,18 +22,19 @@ genai_api_url = st.sidebar.text_input("GenAI API URL", type="default")
 chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
-file = st.file_uploader("Upload a PDF file from your computer", type="pdf")
-loader = UnstructuredPDFLoader('/Users/sharath/Desktop/Snowflake/sec-guide-to-savings-and-investing.pdf')
-data = loader.load()
+
+uploaded_pdf = st.file_uploader("Load pdf: ", type=['pdf'])
+
+if uploaded_pdf is not None:
+    doc = fitz.open(stream=uploaded_pdf.read(), filetype="pdf")
+    text = ""
+    for page in doc:
+        text += page.getText()
+    st.write(text) 
+    doc.close()
+    
 text_splitter=CharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
-chunked_docs=splitter.split_documents(data)
-embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
-embeddings = embeddings
-docsearch = Chroma.from_documents(chunked_docs, embeddings)
-creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
-params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
-llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
-qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
+chunked_docs=splitter.split_documents(text)
 
 
 
