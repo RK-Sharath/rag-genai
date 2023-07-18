@@ -33,6 +33,12 @@ if file is not None:
 def filename(self):
     return self._filename
 
+def save_file(self, file):
+    self._filename = file.name
+    if not os.path.exists(self._filename):
+        with open(self._filename, mode='wb') as f:
+            f.write(file.getvalue())
+
 def load_data(self):
     loader = UnstructuredPDFLoader(self._filename)
     self._data = loader.load()
@@ -54,6 +60,10 @@ def embeddings(self):
         )
     return embeddings
 
+def docsearch(self):
+    docsearch = Chroma.from_documents(chunked_docs, embeddings)
+    return docsearch
+
 def creds():
     creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
     return creds
@@ -65,21 +75,18 @@ def params(self):
 def llm(self):
     llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
     return llm
-
-def docsearch(self):
-    docsearch = Chroma.from_documents(chunked_docs, embeddings)
-    return docsearch
+    
 
 def qa(self):
     qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
-    response = qa.run()
-    return st.info(response)
+    return qa
 
 
 with st.form("myform"):
     question = st.text_input("Type your question:", value="", placeholder="")
     submitted = st.form_submit_button("Submit")
+    answer = qa.run()
     if not genai_api_key:
         st.info("Please add your GenAI API key & GenAI API URL to continue.")
     elif submitted:
-        qa(question)
+    return answer
