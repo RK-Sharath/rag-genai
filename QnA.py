@@ -22,6 +22,7 @@ chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 uploaded_file = st.file_uploader("Choose PDF file", type="pdf", accept_multiple_files=False)
+
 pdf_reader = PdfReader(uploaded_file)
 for i, page in enumerate(pdf_reader.pages):
     text = page.extract_text()
