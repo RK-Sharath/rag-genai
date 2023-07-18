@@ -39,7 +39,7 @@ if uploaded_files:
                 )
                 
     def gen_content(txt):
-        texts = text_splitter.split_documents(raw_text)
+        texts = text_splitter.createDocuments(raw_text)
         embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
         docsearch = Chroma.from_documents(texts, embeddings)
         creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
