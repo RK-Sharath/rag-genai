@@ -48,5 +48,6 @@ if uploaded_files:
                 qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
                 
                 query = st.text_input("Ask a question or give an instruction")
-                answer = qa.run(query)
-                st.write(answer)
+                if query:
+                    answer = qa.run(query)
+                    st.write(answer)
