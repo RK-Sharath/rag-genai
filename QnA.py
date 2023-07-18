@@ -26,7 +26,7 @@ with open(uploaded_file, 'wb') as f:
     f.write(filebytes)
                 
     def gen_content(question):
-        texts = text_splitter.createDocuments(raw_text)
+        texts = text_splitter.createDocuments(filebytes)
         embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
         embeddings=embeddings
         docsearch = Chroma.from_documents(texts, embeddings)
