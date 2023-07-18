@@ -24,14 +24,23 @@ chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 path = st.sidebar.text_input("Select the path", type="default")
 
 
-uploaded = st.file_uploader(label="Please browse for a pdf file", type="pdf")
-if uploaded is None:
-    st.stop()
+def filename(self):
+    return self._filename
 
-base64_pdf = base64.b64encode(uploaded.read()).decode("utf-8")
+def load_data(self):
+    loader = UnstructuredPDFLoader(self._filename)
+    self._data = loader.load()
+        
+def chunk_data(self):
+    text_splitter = CharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap
+        )
+        self._texts = text_splitter.split_documents(self._data)
+        if self._texts is None or len(self._texts) == 0:
+            raise Exception("The document does not contain any text.")
 
 
-splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
 
 pdf_file_path=(path)
 loader = UnstructuredPDFLoader(pdf_file_path)
