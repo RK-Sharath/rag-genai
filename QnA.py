@@ -65,11 +65,7 @@ def docsearch(self):
 
 def qa(self):
     qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
-    return qa
-
-def rag(question):
     response = qa.run()
-    # Print results
     return st.info(response)
 
 
