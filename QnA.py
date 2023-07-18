@@ -34,10 +34,10 @@ if uploaded_file:
     def gen_content(question):
         text_splitter = CharacterTextSplitter()
         texts = text_splitter.split_text(raw_text)
-        docs = [Document(page_content=t) for t in texts]
+        #docs = [Document(page_content=t) for t in texts]
         embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
         embeddings=embeddings
-        docsearch = Chroma.from_documents(docs, embeddings)
+        docsearch = Chroma.from_documents(texts, embeddings)
         creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
         params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
         llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
