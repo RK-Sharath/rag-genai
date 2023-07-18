@@ -33,7 +33,7 @@ if uploaded_file:
                 
     def gen_content(question):
         text_splitter = CharacterTextSplitter()
-        texts = text_splitter.create_documents(raw_text)
+        texts = text_splitter.create_texts(raw_text)
         #docs = [Document(page_content=t) for t in texts]
         embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
         embeddings=embeddings
