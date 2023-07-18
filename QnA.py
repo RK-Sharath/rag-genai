@@ -79,5 +79,5 @@ with st.form("myform"):
     submitted = st.form_submit_button("Submit")
     if not genai_api_key:
         st.info("Please add your GenAI API key & GenAI API URL to continue.")
-    elif submitted:
-        rag(question)
+   # elif submitted:
+      #  rag(question)
