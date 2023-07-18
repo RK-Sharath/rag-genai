@@ -63,15 +63,11 @@ def qa(self):
     qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
     return qa
 
-def rag(question):
-    # Create creds object
+def creds():
     creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
-    # Define parameters
-    params = params
-    # Instantiate LLM model
-    llm=llm
-    # Create retriever object
-    qa = qa
+    return creds
+
+def rag(question):
     # Run LLM model
     response = qa.run(question)
     # Print results
