@@ -38,7 +38,7 @@ if uploaded_files:
                     length_function=len,
                 )
                 
-    def gen_content(txt):
+    def gen_content(question):
         texts = text_splitter.createDocuments(raw_text)
         embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
         docsearch = Chroma.from_documents(texts, embeddings)
@@ -46,7 +46,7 @@ if uploaded_files:
         params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
         llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
         qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
-        response = qa.run(text)
+        response = qa.run(question)
         return st.info(response)
                 
 with st.form("myform"):
