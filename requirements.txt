@@ -5,5 +5,5 @@ ibm-generative-ai
 InstructorEmbedding
 chromadb
 unstructured
-pdfminer
+pymupdf
 unstructured[local-inference]
