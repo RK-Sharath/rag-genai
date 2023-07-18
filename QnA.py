@@ -35,6 +35,7 @@ def load_data(self):
     self._data = loader.load()
     return load_data
          
+data=load_data(file)
 
 def chunked_docs(self):
     text_splitter = CharacterTextSplitter(
