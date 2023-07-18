@@ -23,57 +23,18 @@ chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 file = st.file_uploader("Upload a PDF file from your computer", type="pdf")
+loader = UnstructuredPDFLoader(file)
+data = loader.load()
+text_splitter=CharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
+chunked_docs=splitter.split_documents(data)
+embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large",model_kwargs={"device": "cpu"})
+embeddings = embeddings
+docsearch = Chroma.from_documents(chunked_docs, embeddings)
+creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
+params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
+llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
+qa=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
 
-def save_file(self, file):
-    self._filename = file.name
-    if not os.path.exists(self._filename):
-        with open(self._filename, mode='wb') as f:
-            f.write(file.getvalue())
-
-def load_data(self):
-    loader = UnstructuredPDFLoader(self._filename)
-    self._data = loader.load()
-    return load_data
-         
-data=load_data(file)
-
-def chunked_docs(self):
-    text_splitter = CharacterTextSplitter(
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap
-        )
-    self._texts = text_splitter.split_documents(self._data)
-    if self._texts is None or len(self._texts) == 0:
-        raise Exception("The document does not contain any text.")
-
-
-def embeddings(self):
-    embeddings = HuggingFaceInstructEmbeddings(
-            model_name="hkunlp/instructor-large",
-            model_kwargs={"device": "cpu"}
-        )
-    return embeddings
-
-def docsearch(self):
-    docsearch = Chroma.from_documents(chunked_docs, embeddings)
-    return docsearch
-
-def creds():
-    creds = Credentials(api_key=genai_api_key, api_endpoint=genai_api_url)
-    return creds
-
-def params(self):   
-    params= GenerateParams(decoding_method="sample", temperature=0.7, max_new_tokens=400, min_new_tokens=10, repetition_penalty=2)
-    return params
-
-def llm(self):
-    llm=LangChainInterface(model=ModelType.FLAN_T5_11B, params=params, credentials=creds)
-    return llm
-    
-def qna(question):
-    query=RetrievalQA.from_chain_type(llm=llm, chain_type="stuff",retriever=docsearch.as_retriever())
-    response=query.run()
-    return st.info(response)
 
 
 with st.form("myform"):
@@ -84,4 +45,4 @@ with st.form("myform"):
             if not genai_api_key:
                 st.info("Please add your GenAI API key & GenAI API URL to continue.")
             elif submitted:      
-                qna(question)
+                qa.run(question)
