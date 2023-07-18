@@ -22,6 +22,13 @@ genai_api_url = st.sidebar.text_input("GenAI API URL", type="default")
 chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
+file = st.file_uploader("Upload a PDF file from your computer", type="pdf")
+if file is not None:
+    progress_bar = st.progress(0, text="Uploading file...")
+    st.session_state.engine.save_file(file)
+    progress_bar.progress(100, text=f"File {file.name} is successfully saved.")
+    progress_bar.empty()
+    st.experimental_rerun()
 
 def filename(self):
     return self._filename
