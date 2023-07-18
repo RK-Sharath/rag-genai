@@ -5,5 +5,5 @@ ibm-generative-ai
 InstructorEmbedding
 chromadb
 unstructured
-pymupdf
-unstructured[local-inference]
+PyPDF2
+dotenv
