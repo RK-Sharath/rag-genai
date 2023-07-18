@@ -23,18 +23,14 @@ chunk_size = st.sidebar.text_input("Select Chunk size", type="default")
 chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 
-uploaded_pdf = st.file_uploader("Load pdf: ", type=['pdf'])
+uploaded = st.file_uploader(label="Please browse for a pdf file", type="pdf")
+if uploaded is None:
+    st.stop()
 
-if uploaded_pdf is not None:
-    doc = fitz.open(stream=uploaded_pdf.read(), filetype="pdf")
-    text = ""
-    for page in doc:
-        text += page.getText()
-    st.write(text) 
-    doc.close()
+base64_pdf = base64.b64encode(uploaded.read()).decode("utf-8")
     
 text_splitter=CharacterTextSplitter(chunk_size=chunk_size,chunk_overlap=chunk_overlap)
-chunked_docs=splitter.split_documents(text)
+chunked_docs=splitter.split_documents(base64_pdf)
 
 
 
