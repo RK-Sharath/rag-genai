@@ -6,3 +6,4 @@ InstructorEmbedding
 chromadb
 unstructured
 pdfminer
+unstructured[local-inference]
