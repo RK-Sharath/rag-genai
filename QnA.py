@@ -48,7 +48,9 @@ def embeddings(self):
         )
     return embeddings
 
-docsearch = Chroma.from_documents(chunked_docs, embeddings)
+def docsearch(self):
+    docsearch = Chroma.from_documents(chunked_docs, embeddings)
+    return docsearch
 
 
 def rag(question):
