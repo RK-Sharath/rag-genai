@@ -24,9 +24,6 @@ chunk_overlap = st.sidebar.text_input("Select Chunk overlap", type="default")
 
 file = st.file_uploader("Upload a PDF file from your computer", type="pdf")
 
-def filename(self):
-    return self._filename
-
 def save_file(self, file):
     self._filename = file.name
     if not os.path.exists(self._filename):
