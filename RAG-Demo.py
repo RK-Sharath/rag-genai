@@ -20,7 +20,7 @@ st.set_page_config(page_title="Retriever Augmented Generation Demo", page_icon="
 st.caption("This demo is prepared by Sharath Kumar RK, Senior Data Scientist, Watsonx team")
 st.title('🦜🔗 Ask questions about your document')
 
-#genai_api_key = st.sidebar.text_input("GenAI API Key", type="password")
+genai_api_key = st.sidebar.text_input("GenAI API Key", type="password")
 genai_api_url = st.sidebar.text_input("GenAI API URL", type="default")
 chunk_size = st.sidebar.text_input("Select chunk_size", type="default")
 overlap = st.sidebar.text_input("Select overlap", type="default")
