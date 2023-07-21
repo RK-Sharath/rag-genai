@@ -8,8 +8,6 @@ import itertools
 import streamlit as st
 from io import StringIO
 from langchain.chains import RetrievalQA
-from langchain.retrievers import SVMRetriever
-from langchain.chains import QAGenerationChain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -18,11 +16,11 @@ from langchain.vectorstores import Chroma
 
 
 # Page title
-st.set_page_config(page_title='🔗 Retriever Augmented Generation Demo')
+st.set_page_config(page_title='Retriever Augmented Generation Demo')
 st.caption("This demo is prepared by Sharath Kumar RK, Senior Data Scientist, Watsonx team")
 st.title('🦜🔗 Ask questions about your document')
 
-genai_api_key = st.sidebar.text_input("GenAI API Key", type="password")
+#genai_api_key = st.sidebar.text_input("GenAI API Key", type="password")
 genai_api_url = st.sidebar.text_input("GenAI API URL", type="default")
 chunk_size = st.sidebar.text_input("Select chunk_size", type="default")
 overlap = st.sidebar.text_input("Select overlap", type="default")
@@ -55,7 +53,7 @@ def create_retriever(_embeddings, splits):
     return retriever
 
 #@st.cache_resource
-def split_texts(text, chunk_size, overlap, split_method):
+def split_texts(text, split_method):
 
     st.info("`Splitting doc ...`")
 
@@ -77,8 +75,8 @@ def main():
 
 # Use RecursiveCharacterTextSplitter as the default and only text splitter
     splitter_type = "RecursiveCharacterTextSplitter"
-    embeddings = HuggingFaceEmbeddings()
-    #embeddings = HuggingFaceInstructEmbeddings()
+    #embeddings = HuggingFaceEmbeddings()
+    embeddings = HuggingFaceInstructEmbeddings()
 
     if 'genai_api_key' not in st.session_state:
         genai_api_key = st.text_input(
@@ -103,8 +101,7 @@ def main():
         st.write("Documents uploaded and processed.")
 
         # Split the document into chunks
-        splits = split_texts(loaded_text, chunk_size=1500,
-                             overlap=50, split_method=splitter_type)
+        splits = split_texts(loaded_text, split_method=splitter_type)
 
         # Display the number of text chunks
         num_chunks = len(splits)
