@@ -1,3 +1,4 @@
+chromadb=0.3.29
 ibm-generative-ai[langchain]
 langchain
 PyPDF2
@@ -7,4 +8,4 @@ tokenizers
 scikit-learn
 InstructorEmbedding
 sentence_transformers
---upgrade chromadb
+
