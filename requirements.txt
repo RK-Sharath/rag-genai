@@ -7,4 +7,4 @@ tokenizers
 scikit-learn
 InstructorEmbedding
 sentence_transformers
-chromadb
+--upgrade chromadb
