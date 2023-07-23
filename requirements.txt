@@ -8,4 +8,5 @@ tokenizers
 scikit-learn
 InstructorEmbedding
 sentence_transformers
+sqlite3
 
