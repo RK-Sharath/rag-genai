@@ -4,14 +4,12 @@ from genai.model import Credentials
 import os
 import PyPDF2
 import random
-import itertools
 import streamlit as st
 from io import StringIO
 from langchain.chains import RetrievalQA
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.embeddings import HuggingFaceEmbeddings
-#from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.vectorstores import Chroma
 
 
@@ -71,7 +69,7 @@ def split_texts(text, chunk_size, overlap, split_method):
 
 
 def main():
-    global genai_api_key
+    #global genai_api_key
 
 # Use RecursiveCharacterTextSplitter as the default and only text splitter
     splitter_type = "RecursiveCharacterTextSplitter"
