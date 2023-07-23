@@ -117,7 +117,7 @@ def main():
         if user_question:
             answer = qa.run(user_question)
             st.write("Answer:", answer)
-            st.download("Download results", answer)
+            #st.download("Download results", answer)
 
 
 if __name__ == "__main__":
